@@ -145,6 +145,13 @@ terraform output
 7. On the last page, make sure to copy/paste these keys for storing in Github Secrets
 ![image](https://user-images.githubusercontent.com/57732284/221991526-ec4af661-b200-48cd-9087-6f1b3b9820b3.png)
 
+In the repository's **Settings > Secrets and variables > Actions**, add these secrets using the keys for `github-action-user`:
+
+* `AWS_ACCESS_KEY_ID`
+* `AWS_SECRET_ACCESS_KEY`
+
+After the backend CD workflow creates its LoadBalancer, run `kubectl get service backend` and add the returned URL as the repository variable `MOVIE_API_URL` under **Settings > Secrets and variables > Actions > Variables**. The frontend CD workflow uses `http://localhost:5000` only as a fallback when this variable is not set.
+
 ### Add Github Action user to Kubernetes
 
 Now that the cluster and all AWS resources have been created, you'll need to add the `github-action-user` IAM user ARN to the Kubernetes configuration that will allow that user to execute `kubectl` commands against the cluster.
