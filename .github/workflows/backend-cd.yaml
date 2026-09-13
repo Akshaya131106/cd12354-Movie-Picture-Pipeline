@@ -6,8 +6,17 @@ on:
       - main
     paths:
       - "starter/backend/**"
+      - ".github/workflows/backend-cd.yml"
 
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: movie-backend
+  EKS_CLUSTER_NAME: cluster
 
 jobs:
   lint:
@@ -86,7 +95,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -98,20 +107,21 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           docker build \
-            --tag $ECR_REGISTRY/backend:${{ github.sha }} \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }} \
             .
 
       - name: Push backend Docker image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          docker push $ECR_REGISTRY/backend:${{ github.sha }}
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
 
       - name: Set image output
         id: image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        run: echo "image=$ECR_REGISTRY/backend:${{ github.sha }}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}" >> "$GITHUB_OUTPUT"
 
   deploy:
     name: Deploy Backend
@@ -128,13 +138,13 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Update kubeconfig
         run: |
           aws eks update-kubeconfig \
-            --name cluster \
-            --region us-east-1
+            --name $EKS_CLUSTER_NAME \
+            --region $AWS_REGION
 
       - name: Deploy backend to EKS
         working-directory: starter/backend/k8s
