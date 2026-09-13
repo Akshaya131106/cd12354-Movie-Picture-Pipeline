@@ -1,0 +1,296 @@
+{
+  "version": 4,
+  "terraform_version": "1.3.9",
+  "serial": 534,
+  "lineage": "45a090d9-ce06-19f9-ae61-bcc202143668",
+  "outputs": {
+    "backend_ecr": {
+      "value": "295756203133.dkr.ecr.us-east-1.amazonaws.com/movie-backend",
+      "type": "string"
+    },
+    "cluster_name": {
+      "value": "cluster",
+      "type": "string"
+    },
+    "cluster_version": {
+      "value": "1.33",
+      "type": "string"
+    },
+    "frontend_ecr": {
+      "value": "899103125074.dkr.ecr.us-east-1.amazonaws.com/frontend",
+      "type": "string"
+    },
+    "github_action_user_arn": {
+      "value": "arn:aws:iam::899103125074:user/github-action-user",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "data",
+      "type": "aws_iam_policy_document",
+      "name": "assume_role_policy",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "1903849331",
+            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"sts:AssumeRole\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      }\n    }\n  ]\n}",
+            "override_json": null,
+            "override_policy_documents": null,
+            "policy_id": null,
+            "source_json": null,
+            "source_policy_documents": null,
+            "statement": [
+              {
+                "actions": [
+                  "sts:AssumeRole"
+                ],
+                "condition": [],
+                "effect": "Allow",
+                "not_actions": [],
+                "not_principals": [],
+                "not_resources": [],
+                "principals": [
+                  {
+                    "identifiers": [
+                      "ec2.amazonaws.com"
+                    ],
+                    "type": "Service"
+                  }
+                ],
+                "resources": [],
+                "sid": ""
+              }
+            ],
+            "version": "2012-10-17"
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "aws_iam_policy_document",
+      "name": "github_policy",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "616329698",
+            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"ssm:SendCommand\",\n        \"ssm:GetCommandInvocation\",\n        \"ssm:DescribeInstanceInformation\",\n        \"iam:GetUser\",\n        \"eks:*\",\n        \"ecr:*\",\n        \"ec2:*\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "override_json": null,
+            "override_policy_documents": null,
+            "policy_id": null,
+            "source_json": null,
+            "source_policy_documents": null,
+            "statement": [
+              {
+                "actions": [
+                  "ec2:*",
+                  "ecr:*",
+                  "eks:*",
+                  "iam:GetUser",
+                  "ssm:DescribeInstanceInformation",
+                  "ssm:GetCommandInvocation",
+                  "ssm:SendCommand"
+                ],
+                "condition": [],
+                "effect": "Allow",
+                "not_actions": [],
+                "not_principals": [],
+                "not_resources": [],
+                "principals": [],
+                "resources": [
+                  "*"
+                ],
+                "sid": ""
+              }
+            ],
+            "version": "2012-10-17"
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "aws_ssm_parameter",
+      "name": "eks_ami_release_version",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ssm:us-east-1::parameter/aws/service/eks/optimized-ami/1.33/amazon-linux-2023/x86_64/standard/recommended/release_version",
+            "id": "/aws/service/eks/optimized-ami/1.33/amazon-linux-2023/x86_64/standard/recommended/release_version",
+            "name": "/aws/service/eks/optimized-ami/1.33/amazon-linux-2023/x86_64/standard/recommended/release_version",
+            "type": "String",
+            "value": "1.33.13-20260903",
+            "version": 57,
+            "with_decryption": true
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_ecr_repository",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ecr:us-east-1:295756203133:repository/movie-backend",
+            "encryption_configuration": [
+              {
+                "encryption_type": "AES256",
+                "kms_key": ""
+              }
+            ],
+            "force_delete": null,
+            "id": "movie-backend",
+            "image_scanning_configuration": [
+              {
+                "scan_on_push": false
+              }
+            ],
+            "image_tag_mutability": "MUTABLE",
+            "name": "movie-backend",
+            "registry_id": "295756203133",
+            "repository_url": "295756203133.dkr.ecr.us-east-1.amazonaws.com/movie-backend",
+            "tags": {},
+            "tags_all": {},
+            "timeouts": {
+              "delete": null
+            }
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjoxMjAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIwIn0="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "cni_policy",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "udacity-node-group-20260910111250539700000003",
+            "policy_arn": "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+            "role": "udacity-node-group"
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.node_group",
+            "data.aws_iam_policy_document.assume_role_policy"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "ecr_policy",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "udacity-node-group-20260910111250881600000006",
+            "policy_arn": "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+            "role": "udacity-node-group"
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.node_group",
+            "data.aws_iam_policy_document.assume_role_policy"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "ssm_policy",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "udacity-node-group-20260911203927154700000001",
+            "policy_arn": "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+            "role": "udacity-node-group"
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.node_group"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_user_policy",
+      "name": "github_action_user_permission",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "github-action-user:terraform-20260910111249605800000001",
+            "name": "terraform-20260910111249605800000001",
+            "name_prefix": null,
+            "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"iam:GetUser\",\"eks:*\",\"ecr:*\",\"ec2:*\",\"ssm:DescribeInstanceInformation\",\"ssm:SendCommand\",\"ssm:GetCommandInvocation\"],\"Effect\":\"Allow\",\"Resource\":\"*\"}]}",
+            "user": "github-action-user"
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_user.github_action_user",
+            "data.aws_iam_policy_document.github_policy"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_endpoint",
+      "name": "ec2",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": []
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_endpoint",
+      "name": "ecr-api-endpoint",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": []
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_endpoint",
+      "name": "ecr-dkr-endpoint",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": []
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_endpoint",
+      "name": "eks",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": []
+    }
+  ],
+  "check_results": null
+}
