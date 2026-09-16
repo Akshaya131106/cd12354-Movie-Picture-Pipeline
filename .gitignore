@@ -2,6 +2,13 @@ node_modules
 .pytest_cache
 .terraform
 .terraform.tfstate.lock.info
-*.tfstate.backup
 credentials
-.pytest_cache
+
+# Terraform state and plan files
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfplan.*
+terraform-state-backup.json
+review.tfplan
+tfplan-new-account
